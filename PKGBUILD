@@ -5,14 +5,13 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
 depends=('glib2' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'appstream-glib' 'pacman>=6.0' 'pacman<6.1' 'pacman-mirrors>=4.9.1' 'git')
 makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
-optdepends=('archlinux-appstream-data')
 options=(!emptydirs !strip)
 
 source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
@@ -31,7 +30,7 @@ build() {
 }
 
 package_libpamac() {
-  optdepends=('libpamac-snap-plugin' 'libpamac-flatpak-plugin')
+  optdepends=('libpamac-snap-plugin' 'libpamac-flatpak-plugin' 'archlinux-appstream-data')
   backup=('etc/pamac.conf')
   install=libpamac.install
   cd "$srcdir/libpamac-$pkgver"
@@ -51,7 +50,7 @@ package_libpamac() {
 
 package_libpamac-snap-plugin() {
   pkgdesc="Snap plugin for Pamac"
-  depends=('snapd' 'snapd-glib')
+  depends=('snapd' 'snapd-glib' 'libpamac')
   provides=('pamac-snap-plugin')
   conflicts=('pamac-snap-plugin')
   replaces=('pamac-snap-plugin')
@@ -64,7 +63,7 @@ package_libpamac-snap-plugin() {
 
 package_libpamac-flatpak-plugin() {
   pkgdesc="Flatpak plugin for Pamac"
-  depends=('flatpak')
+  depends=('flatpak' 'libpamac')
   provides=('pamac-flatpak-plugin')
   conflicts=('pamac-flatpak-plugin')
   replaces=('pamac-flatpak-plugin')
