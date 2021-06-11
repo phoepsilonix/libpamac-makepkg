@@ -5,15 +5,15 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
 depends=('glib2' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'appstream-glib' 'libalpm.so>=13' 'pacman-mirrors>=4.9.1' 'git')
 makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
+replaces=('pamac-common')
 options=(!emptydirs !strip)
-
 source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
 sha256sums=('d4fa2fadffac7a811f9708d724797833377986d2f8c1bf9cc6a24f301783dc78')
 
@@ -74,5 +74,3 @@ package_libpamac-flatpak-plugin() {
   install -Dm755 "builddir/src/libpamac-flatpak.so.11" "$pkgdir/usr/lib/libpamac-flatpak.so.11"
   ln -sr "$pkgdir/usr/lib/libpamac-flatpak.so.11" "$pkgdir/usr/lib/libpamac-flatpak.so"
 }
-
-#vim:set ts=2 sw=2 et:
