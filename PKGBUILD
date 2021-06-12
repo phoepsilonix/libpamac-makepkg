@@ -5,7 +5,8 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.0.0
-pkgrel=4
+pkgrel=5
+_commit=16a9cd6b5cda36739b18036c735fa8a2e415d931
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
@@ -14,8 +15,13 @@ depends=('glib2' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'appstream-glib' 'li
 makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
 replaces=('pamac-common')
 options=(!emptydirs !strip)
-source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
-sha256sums=('d4fa2fadffac7a811f9708d724797833377986d2f8c1bf9cc6a24f301783dc78')
+source=(#https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2
+        https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
+sha256sums=('47b694ea811344497148c513524fb97cce14303fcc1da43587f90e217650d38b')
+
+prepare() {
+  mv $pkgname-$_commit $pkgname-$pkgver
+}
 
 build() {
   cd $pkgname-$pkgver
