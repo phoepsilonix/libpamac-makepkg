@@ -5,7 +5,7 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.0.1
-pkgrel=2
+pkgrel=3
 _commit='d1cba695ce1480b4b1a6f048bbc0c5ad3ef58618'
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -39,6 +39,9 @@ package_libpamac() {
   optdepends=('libpamac-snap-plugin' 'libpamac-flatpak-plugin' 'archlinux-appstream-data')
   backup=('etc/pamac.conf')
   install=libpamac.install
+  provides=('pamac-common')
+  conflicts=('pamac-common')
+  replaces=('pamac-common')  
   cd "$srcdir/libpamac-$pkgver"
   cd builddir
   DESTDIR="$pkgdir" meson install
