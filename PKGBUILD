@@ -4,8 +4,8 @@
 
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
-pkgver=11.0.1
-pkgrel=3
+pkgver=11.1.0beta
+pkgrel=2
 _commit='d1cba695ce1480b4b1a6f048bbc0c5ad3ef58618'
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -15,13 +15,13 @@ depends=('glib2' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'appstream-glib' 'li
 makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
 replaces=('pamac-common')
 options=(!emptydirs !strip)
-source=(#https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2
-        https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
-sha256sums=('7b068ff16c107234ae3dab9be407440af7be2f92cc4ec2d535bbcf6852eaa3fa')
+source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
+        #https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
+sha256sums=('e7701b15c8de6497c132836bfb79b2b70d5f4bb75c2958760723ea160ff9aab7')
 
-prepare() {
-  mv $pkgname-$_commit $pkgname-$pkgver
-}
+#prepare() {
+#  mv $pkgname-$_commit $pkgname-$pkgver
+#}
 
 build() {
   cd $pkgname-$pkgver
@@ -50,11 +50,13 @@ package_libpamac() {
   rm "$pkgdir/usr/include/pamac-snap.h"
   rm "$pkgdir/usr/lib/libpamac-snap.so"
   rm "$pkgdir/usr/lib/libpamac-snap.so.11"
+  rm "$pkgdir/usr/lib/libpamac-snap.so.11.1"
   # remove pamac-flatpak
   rm "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
   rm "$pkgdir/usr/include/pamac-flatpak.h"
   rm "$pkgdir/usr/lib/libpamac-flatpak.so"
   rm "$pkgdir/usr/lib/libpamac-flatpak.so.11"
+  rm "$pkgdir/usr/lib/libpamac-flatpak.so.11.1"
 }
 
 package_libpamac-snap-plugin() {
@@ -66,7 +68,8 @@ package_libpamac-snap-plugin() {
   cd "$srcdir/libpamac-$pkgver"
   install -Dm644 "builddir/src/pamac-snap.vapi" "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
   install -Dm644 "builddir/src/pamac-snap.h" "$pkgdir/usr/include/pamac-snap.h"
-  install -Dm755 "builddir/src/libpamac-snap.so.11" "$pkgdir/usr/lib/libpamac-snap.so.11"
+  install -Dm755 "builddir/src/libpamac-snap.so.11.1" "$pkgdir/usr/lib/libpamac-snap.so.11.1"
+  ln -sr "$pkgdir/usr/lib/libpamac-snap.so.11.1" "$pkgdir/usr/lib/libpamac-snap.so.11"
   ln -sr "$pkgdir/usr/lib/libpamac-snap.so.11" "$pkgdir/usr/lib/libpamac-snap.so"
 }
 
@@ -80,6 +83,7 @@ package_libpamac-flatpak-plugin() {
   cd "$srcdir/libpamac-$pkgver"
   install -Dm644 "builddir/src/pamac-flatpak.vapi" "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
   install -Dm644 "builddir/src/pamac-flatpak.h" "$pkgdir/usr/include/pamac-flatpak.h"
-  install -Dm755 "builddir/src/libpamac-flatpak.so.11" "$pkgdir/usr/lib/libpamac-flatpak.so.11"
+  install -Dm755 "builddir/src/libpamac-flatpak.so.11.1" "$pkgdir/usr/lib/libpamac-flatpak.so.11.1"
+  ln -sr "$pkgdir/usr/lib/libpamac-flatpak.so.11.1" "$pkgdir/usr/lib/libpamac-flatpak.so.11"
   ln -sr "$pkgdir/usr/lib/libpamac-flatpak.so.11" "$pkgdir/usr/lib/libpamac-flatpak.so"
 }
