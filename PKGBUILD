@@ -17,7 +17,7 @@ replaces=('pamac-common')
 options=(!emptydirs !strip)
 source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
         #https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
-sha256sums=('545818a2935efcdbccc1545551918eb847219efc6388d2eff03dac8d5489f2e1')
+sha256sums=('b2af170b51b571f2ea08efe51b6bc5cedfbe8519c81450746c7cdfbbbc30fcc1')
 
 #prepare() {
 #  mv $pkgname-$_commit $pkgname-$pkgver
