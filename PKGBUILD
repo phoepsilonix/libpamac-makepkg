@@ -4,7 +4,7 @@
 
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
-pkgver=11.1.2
+pkgver=11.1.3
 pkgrel=1
 _commit=
 pkgdesc="Library for Pamac package manager based on libalpm"
@@ -17,7 +17,7 @@ replaces=('pamac-common')
 options=(!emptydirs !strip)
 source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
         #https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
-sha256sums=('c52f3160d97ad0d695196433d38865449901276401cf0cd1d70bb9cc14fc3ad7')
+sha256sums=('4618dce17f66857d4a2872fccfa60308e84dee83756524f6b5df59472f22496b')
 
 #prepare() {
 #  mv $pkgname-$_commit $pkgname-$pkgver
