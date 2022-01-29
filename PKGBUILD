@@ -22,6 +22,8 @@ sha256sums=('f22d67597ec606ff56a8ed998dc2992401aaf2fde85298d64d9593ba3023776c')
 prepare() {
   mv $pkgname-$_commit $pkgname-$pkgver
 
+  cd $pkgname-$pkgver
+  
   # adjust version string
   sed -i -e "s|\"$_pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala  
 }
