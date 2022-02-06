@@ -5,8 +5,8 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.2.0
-pkgrel=6
-_commit=9e7925dfa2aad9842755dfe2522a6479cf242789
+pkgrel=7
+_commit=5bf71e5124f390db022669683c40b767bbd5a770
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
@@ -17,7 +17,7 @@ replaces=('pamac-common')
 options=(!emptydirs !strip)
 source=(#https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
         https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
-sha256sums=('f22d67597ec606ff56a8ed998dc2992401aaf2fde85298d64d9593ba3023776c')
+sha256sums=('4dff459ab19c39cd2adcf225d1fe83cb62ffae6dbc6cfd6190bb37bd2164de08')
 
 prepare() {
   mv $pkgname-$_commit $pkgname-$pkgver
@@ -25,7 +25,7 @@ prepare() {
   cd $pkgname-$pkgver
   
   # adjust version string
-  sed -i -e "s|\"$_pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala  
+  sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala  
 }
 
 build() {
