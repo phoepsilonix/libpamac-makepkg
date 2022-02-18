@@ -5,7 +5,7 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.2.0
-pkgrel=9
+pkgrel=10
 _commit=cea1826792de5eca1d343478b796a09448774702
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
