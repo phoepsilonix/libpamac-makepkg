@@ -1,0 +1,13 @@
+diff --git a/src/aur.vala b/src/aur.vala
+index 07d6d01..33e9297 100644
+--- a/src/aur.vala
++++ b/src/aur.vala
+@@ -124,7 +124,7 @@ namespace Pamac {
+ 				force = 1;
+ 			}
+ 			// dload defined in alpm_utils.vala
+-			int ret = dload (alpm_utils, "https://aur.archlinux.org", db_gz, real_build_dir, force, false, emit_signal);
++			int ret = dload (alpm_utils, "https://aur.manjaro.org", db_gz, real_build_dir, force, false, emit_signal);
+ 			if (ret < 0) {
+ 				return false;
+ 			}
