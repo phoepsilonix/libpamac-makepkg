@@ -5,7 +5,7 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.2.0
-pkgrel=12
+pkgrel=13
 _commit=c11324de9e5615f2947f09e2c4d6de00e59e5ff3
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -16,13 +16,20 @@ makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 's
 replaces=('pamac-common')
 options=(!emptydirs !strip)
 source=(#https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2)
-        https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2)
-sha256sums=('35b8639c0af525aec5454946dd151c3767d6a917da404f0ad8e2d7664b622ca5')
+        https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2
+        0001-change-AUR-DB-URL.patch)
+sha256sums=('35b8639c0af525aec5454946dd151c3767d6a917da404f0ad8e2d7664b622ca5'
+            '7385e40d79fee27a5f169eeb5ec3644ccac8aa839f38800adeeead663ce69c07')
 
 prepare() {
   mv $pkgname-$_commit $pkgname-$pkgver
 
   cd $pkgname-$pkgver
+  
+  # Use our CDN Infra
+  # https://gitlab.archlinux.org/archlinux/aurweb/-/issues/337
+  # https://gitlab.manjaro.org/applications/pamac/-/issues/1243#note_26068
+  patch -p1 -i ../0001-change-AUR-DB-URL.patch
   
   # adjust version string
   sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala  
