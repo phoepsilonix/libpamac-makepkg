@@ -5,92 +5,87 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.4.1
-pkgrel=1
-_commit=""
+pkgrel=2
+_sover=11.4
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
 depends=('glib2' 'json-glib' 'libsoup3' 'dbus-glib' 'polkit' 'appstream-glib' 'libalpm.so>=13' 'pacman-mirrors>=4.9.1' 'git')
-makedepends=('gettext' 'vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
-replaces=('pamac-common')
-options=(!emptydirs !strip)
-source=(https://gitlab.manjaro.org/applications/libpamac/-/archive/$pkgver/libpamac-$pkgver.tar.bz2
-        #https://gitlab.manjaro.org/applications/libpamac/-/archive/$_commit/libpamac-$_commit.tar.bz2
-       )
-sha256sums=('f0aa76f16b3dadfd6a2c72008953e9f89488cd1da8b3d8349114bbf86ce20b5d')
+makedepends=('vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
+_commit=29d71809ee4171585d58a2f652a2eaa05e3dbfb0  # tags/11.4.1^0
+source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
+sha256sums=('SKIP')
+
+create_links() {
+  # create soname links
+  find "$pkgdir" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
+      _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
+      _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
+      [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
+      [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
+  done
+}
 
 prepare() {
-  # only needed when we switch to a commit
-  #mv $pkgname-$_commit $pkgname-$pkgver
+  cd "$srcdir/$pkgbase"
 
-  cd $pkgname-$pkgver
-  
   # adjust version string
-  sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala  
+  sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala
 }
 
 build() {
-  cd $pkgname-$pkgver
-  mkdir -p builddir
-  cd builddir
-  meson setup --prefix=/usr \
-              --sysconfdir=/etc \
-              -Denable-snap=true \
-              -Denable-flatpak=true \
-              --buildtype=release
-  meson compile
+  arch-meson "$pkgbase" build \
+    -Denable-snap=true \
+    -Denable-flatpak=true
+  meson compile -C build
 }
 
 package_libpamac() {
   optdepends=('libpamac-snap-plugin' 'libpamac-flatpak-plugin' 'archlinux-appstream-data')
   backup=('etc/pamac.conf')
-  install=libpamac.install
-  provides=('pamac-common')
-  conflicts=('pamac-common')
-  replaces=('pamac-common')  
-  cd "$srcdir/libpamac-$pkgver"
-  cd builddir
-  DESTDIR="$pkgdir" meson install
+  install="$pkgname.install"
+  provides=('libpamac.so=11' 'pamac-common')
+  replaces=('pamac-common')
+
+  meson install -C build --destdir "$pkgdir"
+
+  cd "$srcdir/$pkgbase"
+
   # remove pamac-snap
   rm "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
   rm "$pkgdir/usr/include/pamac-snap.h"
-  rm "$pkgdir/usr/lib/libpamac-snap.so"
-  rm "$pkgdir/usr/lib/libpamac-snap.so.11"
-  rm "$pkgdir/usr/lib/libpamac-snap.so.11.4"
+  rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
+
   # remove pamac-flatpak
   rm "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
   rm "$pkgdir/usr/include/pamac-flatpak.h"
-  rm "$pkgdir/usr/lib/libpamac-flatpak.so"
-  rm "$pkgdir/usr/lib/libpamac-flatpak.so.11"
-  rm "$pkgdir/usr/lib/libpamac-flatpak.so.11.4"
+  rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
 }
 
 package_libpamac-snap-plugin() {
   pkgdesc="Snap plugin for Pamac"
   depends=('snapd' 'snapd-glib' 'libpamac')
-  provides=('pamac-snap-plugin')
-  conflicts=('pamac-snap-plugin')
+  provides=('libpamac-snap.so=11' 'pamac-snap-plugin')
   replaces=('pamac-snap-plugin')
-  cd "$srcdir/libpamac-$pkgver"
-  install -Dm644 "builddir/src/pamac-snap.vapi" "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
-  install -Dm644 "builddir/src/pamac-snap.h" "$pkgdir/usr/include/pamac-snap.h"
-  install -Dm755 "builddir/src/libpamac-snap.so.11.4" "$pkgdir/usr/lib/libpamac-snap.so.11.4"
-  ln -sr "$pkgdir/usr/lib/libpamac-snap.so.11.4" "$pkgdir/usr/lib/libpamac-snap.so.11"
-  ln -sr "$pkgdir/usr/lib/libpamac-snap.so.11" "$pkgdir/usr/lib/libpamac-snap.so"
+
+  install -Dm644 "build/src/pamac-snap.vapi" "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
+  install -Dm644 "build/src/pamac-snap.h" "$pkgdir/usr/include/pamac-snap.h"
+  install -Dm644 "build/src/$pkgbase-snap.so.${_sover}" "$pkgdir/usr/lib/$pkgbase-snap.so.${_sover}"
+
+  create_links
 }
 
 package_libpamac-flatpak-plugin() {
   pkgdesc="Flatpak plugin for Pamac"
   depends=('flatpak' 'libpamac')
-  provides=('pamac-flatpak-plugin')
-  conflicts=('pamac-flatpak-plugin')
+  provides=('libpamac-flatpak.so=11' 'pamac-flatpak-plugin')
   replaces=('pamac-flatpak-plugin')
-  install=libpamac-flatpak-plugin.install
-  cd "$srcdir/libpamac-$pkgver"
-  install -Dm644 "builddir/src/pamac-flatpak.vapi" "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
-  install -Dm644 "builddir/src/pamac-flatpak.h" "$pkgdir/usr/include/pamac-flatpak.h"
-  install -Dm755 "builddir/src/libpamac-flatpak.so.11.4" "$pkgdir/usr/lib/libpamac-flatpak.so.11.4"
-  ln -sr "$pkgdir/usr/lib/libpamac-flatpak.so.11.4" "$pkgdir/usr/lib/libpamac-flatpak.so.11"
-  ln -sr "$pkgdir/usr/lib/libpamac-flatpak.so.11" "$pkgdir/usr/lib/libpamac-flatpak.so"
+  install="$pkgname.install"
+
+  install -Dm644 "build/src/pamac-flatpak.vapi" "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
+  install -Dm644 "build/src/pamac-flatpak.h" "$pkgdir/usr/include/pamac-flatpak.h"
+  install -Dm644 "build/src/$pkgbase-flatpak.so.${_sover}" "$pkgdir/usr/lib/$pkgbase-flatpak.so.${_sover}"
+
+  create_links
 }
