@@ -5,7 +5,7 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.5.2
-pkgrel=2
+pkgrel=3
 _sover=11.5
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
@@ -13,7 +13,7 @@ url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
 depends=('glib2' 'json-glib' 'libsoup3' 'dbus-glib' 'polkit' 'appstream-glib' 'libalpm.so' 'pacman-mirrors' 'git')
 makedepends=('vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
-_commit=49d8acfd1cfa3f80c759cebaa1577f300446c818  # tags/11.5.2^0
+_commit=57bef1e6fc0a3f6a66af6b6ac274d9ef3ec9fd52  # tags/11.5.2^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
 
