@@ -27,6 +27,11 @@ create_links() {
   done
 }
 
+pkgver() {
+  cd "$srcdir/$pkgbase"
+  git describe --tags | sed 's/^v//;s/-/+/g'
+}
+
 prepare() {
   cd "$srcdir/$pkgbase"
 
