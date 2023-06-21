@@ -5,27 +5,18 @@
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 pkgver=11.5.4
-pkgrel=1
-_sover=11.5
+pkgrel=2
 pkgdesc="Library for Pamac package manager based on libalpm"
-arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
+arch=('x86_64' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
-depends=('glib2' 'json-glib' 'libsoup3' 'dbus-glib' 'polkit' 'appstream-glib' 'libalpm.so' 'pacman-mirrors' 'git')
-makedepends=('vala' 'meson' 'ninja' 'gobject-introspection' 'snapd' 'snapd-glib' 'flatpak' 'asciidoc')
+depends=('appstream-glib' 'dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
+         'libsoup3' 'pacman-mirrors' 'polkit')
+makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
+             'snapd-glib' 'vala')
 _commit=99b67d6955bbd0ca7067263c8a5bd8f5a774f46f  # tags/11.5.4^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
-
-create_links() {
-  # create soname links
-  find "$pkgdir" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
-      _soname=$(dirname "${_lib}")/$(readelf -d "${_lib}" | grep -Po 'SONAME.*: \[\K[^]]*' || true)
-      _base=$(echo ${_soname} | sed -r 's/(.*)\.so.*/\1.so/')
-      [[ -e "${_soname}" ]] || ln -s $(basename "${_lib}") "${_soname}"
-      [[ -e "${_base}" ]] || ln -s $(basename "${_soname}") "${_base}"
-  done
-}
 
 pkgver() {
   cd "$srcdir/$pkgbase"
@@ -34,9 +25,6 @@ pkgver() {
 
 prepare() {
   cd "$srcdir/$pkgbase"
-
-  # adjust version string
-  sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/version.vala
 }
 
 build() {
@@ -47,7 +35,6 @@ build() {
 }
 
 package_libpamac() {
-  optdepends=('libpamac-snap-plugin' 'libpamac-flatpak-plugin' 'archlinux-appstream-data')
   backup=('etc/pamac.conf')
   install="$pkgname.install"
   provides=('libpamac.so=11' 'pamac-common')
@@ -57,12 +44,12 @@ package_libpamac() {
 
   cd "$srcdir/$pkgbase"
 
-  # remove pamac-snap
+  # remove libpamac-snap
   rm "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
   rm "$pkgdir/usr/include/pamac-snap.h"
   rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
 
-  # remove pamac-flatpak
+  # remove libpamac-flatpak
   rm "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
   rm "$pkgdir/usr/include/pamac-flatpak.h"
   rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
@@ -74,11 +61,16 @@ package_libpamac-snap-plugin() {
   provides=('libpamac-snap.so=11' 'pamac-snap-plugin')
   replaces=('pamac-snap-plugin')
 
-  install -Dm644 "build/src/pamac-snap.vapi" "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
-  install -Dm644 "build/src/pamac-snap.h" "$pkgdir/usr/include/pamac-snap.h"
-  install -Dm644 "build/src/$pkgbase-snap.so.${_sover}" "$pkgdir/usr/lib/$pkgbase-snap.so.${_sover}"
-
-  create_links
+  install -Dm644 "build/src/pamac-snap.vapi" \
+    "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
+  install -Dm644 "build/src/pamac-snap.h" \
+    "$pkgdir/usr/include/pamac-snap.h"
+  install -Dm644 "build/src/$pkgbase-snap.so" \
+    "$pkgdir/usr/lib/$pkgbase-snap.so"
+  install -Dm644 "build/src/$pkgbase-snap.so.11" \
+    "$pkgdir/usr/lib/$pkgbase-snap.so.11"
+  install -Dm644 "build/src/$pkgbase-snap.so.11.5" \
+    "$pkgdir/usr/lib/$pkgbase-snap.so.11.5"
 }
 
 package_libpamac-flatpak-plugin() {
@@ -88,9 +80,14 @@ package_libpamac-flatpak-plugin() {
   replaces=('pamac-flatpak-plugin')
   install="$pkgname.install"
 
-  install -Dm644 "build/src/pamac-flatpak.vapi" "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
-  install -Dm644 "build/src/pamac-flatpak.h" "$pkgdir/usr/include/pamac-flatpak.h"
-  install -Dm644 "build/src/$pkgbase-flatpak.so.${_sover}" "$pkgdir/usr/lib/$pkgbase-flatpak.so.${_sover}"
-
-  create_links
+  install -Dm644 "build/src/pamac-flatpak.vapi" \
+    "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
+  install -Dm644 "build/src/pamac-flatpak.h" \
+    "$pkgdir/usr/include/pamac-flatpak.h"
+  install -Dm644 "build/src/$pkgbase-flatpak.so" \
+    "$pkgdir/usr/lib/$pkgbase-flatpak.so"
+  install -Dm644 "build/src/$pkgbase-flatpak.so.11" \
+    "$pkgdir/usr/lib/$pkgbase-flatpak.so.11"
+  install -Dm644 "build/src/$pkgbase-flatpak.so.11.5" \
+    "$pkgdir/usr/lib/$pkgbase-flatpak.so.11.5"
 }
