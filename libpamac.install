@@ -17,6 +17,9 @@ restore_conf() {
 }
 
 post_install() {
+  # remove file (#28, #29)
+  [[ -e /var/tmp/pamac/dbs/sync/refresh_timestamp ]] && rm -f /var/tmp/pamac/dbs/sync/refresh_timestamp
+
   # enable systemd timers
   mkdir -p /etc/systemd/system/timers.target.wants
   ln -sf /usr/lib/systemd/system/pamac-cleancache.timer /etc/systemd/system/timers.target.wants/pamac-cleancache.timer
@@ -32,6 +35,9 @@ post_install() {
 }
 
 post_upgrade() {
+  # remove file (#28, #29)
+  [[ -e /var/tmp/pamac/dbs/sync/refresh_timestamp ]] && rm -f /var/tmp/pamac/dbs/sync/refresh_timestamp
+
   # restore old conf
   if [ "$(vercmp $2 7.3.5-3)" -lt 0 ]; then
      restore_conf
