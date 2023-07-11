@@ -4,8 +4,8 @@
 
 pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
-pkgver=11.5.5
-pkgrel=3
+pkgver=11.5.5+1+g4dbc56a
+pkgrel=2
 _sover=11.5
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -16,8 +16,12 @@ depends=('appstream-glib' 'dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
 makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
              'snapd-glib' 'vala')
 _commit=4dbc56aaf7d16f30761d859f8d7cb59f9f9e03f1  # tags/11.5.5^0
-source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
-sha256sums=('SKIP')
+source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit"
+        'partly-reverse-889aa1d7.patch'
+        'use-umask-for-dbtmp-file.patch')
+sha256sums=('SKIP'
+            '073b879b528f9acbd52e7a5a66a2fb401f1608ac1697f3064cad40d6b9b2e7f0'
+            'e19582f231a3e0b52962e9b7bb9064e3f29bd8b35b1777b8e38082d85e9e4570')
 
 create_links() {
   # create soname links
@@ -36,6 +40,8 @@ pkgver() {
 
 prepare() {
   cd "$srcdir/$pkgbase"
+  patch -p1 -i ../partly-reverse-889aa1d7.patch
+  patch -p1 -i ../use-umask-for-dbtmp-file.patch
 }
 
 build() {
