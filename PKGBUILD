@@ -16,7 +16,7 @@ depends=('appstream' 'dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
 makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
              'snapd-glib' 'vala')
 options=('debug')
-_commit=dc9b9a97dbc0b6cef6ff01f86a4d5659fec48043  # tags/11.6.0^0
+_commit=88fd49cbf6c8769ea92ca119e96c36cb21781748  # tags/11.6.0^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
 
@@ -57,13 +57,9 @@ package_libpamac() {
   cd "$srcdir/$pkgbase"
 
   # remove libpamac-snap
-  rm "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
-  rm "$pkgdir/usr/include/pamac-snap.h"
   rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
 
   # remove libpamac-flatpak
-  rm "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
-  rm "$pkgdir/usr/include/pamac-flatpak.h"
   rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
 }
 
@@ -73,10 +69,6 @@ package_libpamac-snap-plugin() {
   provides=('libpamac-snap.so=11' 'pamac-snap-plugin')
   replaces=('pamac-snap-plugin')
 
-  install -Dm644 "build/src/pamac-snap.vapi" \
-    "$pkgdir/usr/share/vala/vapi/pamac-snap.vapi"
-  install -Dm644 "build/src/pamac-snap.h" \
-    "$pkgdir/usr/include/pamac-snap.h"
   install -Dm644 "build/src/$pkgbase-snap.so.${_sover}" \
     "$pkgdir/usr/lib/$pkgbase-snap.so.${_sover}"
 
@@ -90,10 +82,6 @@ package_libpamac-flatpak-plugin() {
   replaces=('pamac-flatpak-plugin')
   install="$pkgname.install"
 
-  install -Dm644 "build/src/pamac-flatpak.vapi" \
-    "$pkgdir/usr/share/vala/vapi/pamac-flatpak.vapi"
-  install -Dm644 "build/src/pamac-flatpak.h" \
-    "$pkgdir/usr/include/pamac-flatpak.h"
   install -Dm644 "build/src/$pkgbase-flatpak.so.${_sover}" \
     "$pkgdir/usr/lib/$pkgbase-flatpak.so.${_sover}"
 
