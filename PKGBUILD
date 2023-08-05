@@ -3,18 +3,19 @@
 # Contributor: Helmut Stult <helmut@manjaro.org>
 
 pkgbase=libpamac
-pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
+pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin'
+         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
 pkgver=11.6.0
-pkgrel=0
+pkgrel=0.1
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL3')
-depends=('appstream' 'dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
+depends=('dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
          'libsoup3' 'pacman-mirrors' 'polkit')
 makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
-             'snapd-glib' 'vala')
+             'snapd-glib' 'vala' 'appstream')
 options=('debug')
 _commit=88fd49cbf6c8769ea92ca119e96c36cb21781748  # tags/11.6.0^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
@@ -61,6 +62,12 @@ package_libpamac() {
 
   # remove libpamac-flatpak
   rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
+
+  # remove libpamac-appstream
+  rm "$pkgdir/usr/lib/$pkgbase-appstream".{so,so.*}
+ 
+  # remove libpamac-aur
+  rm "$pkgdir/usr/lib/$pkgbase-aur".{so,so.*}
 }
 
 package_libpamac-snap-plugin() {
@@ -84,6 +91,28 @@ package_libpamac-flatpak-plugin() {
 
   install -Dm644 "build/src/$pkgbase-flatpak.so.${_sover}" \
     "$pkgdir/usr/lib/$pkgbase-flatpak.so.${_sover}"
+
+  create_links
+}
+
+package_libpamac-appstream-plugin() {
+  pkgdesc="Appstream plugin for Pamac"
+  depends=('appstream' 'libpamac')
+  provides=('libpamac-appstream.so=11')
+
+  install -Dm644 "build/src/$pkgbase-appstream.so.${_sover}" \
+    "$pkgdir/usr/lib/$pkgbase-appstream.so.${_sover}"
+
+  create_links
+}
+
+package_libpamac-aur-plugin() {
+  pkgdesc="AUR plugin for Pamac"
+  depends=('libpamac')
+  provides=('libpamac-aur.so=11')
+
+  install -Dm644 "build/src/$pkgbase-aur.so.${_sover}" \
+    "$pkgdir/usr/lib/$pkgbase-aur.so.${_sover}"
 
   create_links
 }
