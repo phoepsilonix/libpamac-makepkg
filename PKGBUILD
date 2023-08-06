@@ -3,10 +3,10 @@
 # Contributor: Helmut Stult <helmut@manjaro.org>
 
 pkgbase=libpamac
-pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin'
-         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
+pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
+#         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
 pkgver=11.6.0
-pkgrel=0.1
+pkgrel=0.2
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -50,7 +50,10 @@ build() {
 package_libpamac() {
   backup=('etc/pamac.conf')
   install="$pkgname.install"
-  provides=('libpamac.so=11' 'pamac-common')
+  provides=('libpamac.so=11' 'pamac-common'
+            'libpamac-appstream.so=11' 'libpamac-appstream-plugin'
+            'libpamac-aur.so=11' 'libpamac-aur-plugin')
+  conflicts=('libpamac-aur-plugin' 'libpamac-appstream-plugin')
   replaces=('pamac-common')
 
   meson install -C build --destdir "$pkgdir"
@@ -64,10 +67,10 @@ package_libpamac() {
   rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
 
   # remove libpamac-appstream
-  rm "$pkgdir/usr/lib/$pkgbase-appstream".{so,so.*}
+  #rm "$pkgdir/usr/lib/$pkgbase-appstream".{so,so.*}
  
   # remove libpamac-aur
-  rm "$pkgdir/usr/lib/$pkgbase-aur".{so,so.*}
+  #rm "$pkgdir/usr/lib/$pkgbase-aur".{so,so.*}
 }
 
 package_libpamac-snap-plugin() {
@@ -108,7 +111,7 @@ package_libpamac-appstream-plugin() {
 
 package_libpamac-aur-plugin() {
   pkgdesc="AUR plugin for Pamac"
-  depends=('libpamac')
+  depends=('libpamac' 'base-devel')
   provides=('libpamac-aur.so=11')
 
   install -Dm644 "build/src/$pkgbase-aur.so.${_sover}" \
