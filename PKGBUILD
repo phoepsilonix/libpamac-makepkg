@@ -6,7 +6,7 @@ pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 #         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
 pkgver=11.6.0
-pkgrel=0.2
+pkgrel=0.3
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -50,6 +50,7 @@ build() {
 package_libpamac() {
   backup=('etc/pamac.conf')
   install="$pkgname.install"
+  depends+=('appstream')
   provides=('libpamac.so=11' 'pamac-common'
             'libpamac-appstream.so=11' 'libpamac-appstream-plugin'
             'libpamac-aur.so=11' 'libpamac-aur-plugin')
