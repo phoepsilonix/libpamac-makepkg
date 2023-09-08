@@ -17,7 +17,7 @@ depends=('dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
 makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
              'snapd-glib' 'vala' 'appstream')
 options=('debug')
-_commit=52f2eb3a09a98ac7dde02651c9c84d31066bf6a6  # tags/11.6.2^0
+_commit=d2841baa9f8a391418839c4bfdc274966236e2f2  # tags/11.6.2^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
 
