@@ -60,7 +60,7 @@ package_libpamac() {
   provides=('libpamac.so=11' 'pamac-common'
             'libpamac-appstream.so=11' 'libpamac-appstream-plugin'
             'libpamac-aur.so=11' 'libpamac-aur-plugin')
-  conflicts=('libpamac-aur-plugin') # 'libpamac-appstream-plugin')
+  conflicts=('libpamac-aur-plugin' 'libpamac-appstream-plugin')
   replaces=('pamac-common')
 
   meson install -C build --destdir "$pkgdir"
@@ -71,7 +71,7 @@ package_libpamac() {
   rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
 
   # remove libpamac-flatpak
-  #rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
+  rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
 
   # remove libpamac-appstream
   #rm "$pkgdir/usr/lib/$pkgbase-appstream".{so,so.*}
