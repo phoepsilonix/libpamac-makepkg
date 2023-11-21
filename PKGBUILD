@@ -6,7 +6,7 @@ pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 #         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
 pkgver=11.6.2+6+ge74fe0e
-pkgrel=1
+pkgrel=3
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -18,8 +18,11 @@ makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
              'snapd-glib' 'vala' 'appstream')
 options=('debug')
 _commit=e74fe0e1c15f4fd14d02ff12650be3fde47287d7  # branch/master
-source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
-sha256sums=('SKIP')
+source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit"
+        meson.patch appstream-1.0.patch)
+sha256sums=('SKIP'
+            '7d0401199ddae978f32f4180afaf920b213059e0300af66ca2fc9cef1d04db0e'
+            'bcfe09aada61907b7bc037ba0440dcc3db3ac9c814148c0495b6b725bf5f8d10')
 
 create_links() {
   # create soname links
@@ -38,10 +41,13 @@ pkgver() {
 
 prepare() {
   cd "$srcdir/$pkgbase"
+  patch -p1 -i ../meson.patch
+  patch -p1 -i ../appstream-1.0.patch
 }
 
 build() {
   arch-meson "$pkgbase" build \
+    -Denable-appstream=true \
     -Denable-snap=true \
     -Denable-flatpak=true
   meson compile -C build
@@ -54,7 +60,7 @@ package_libpamac() {
   provides=('libpamac.so=11' 'pamac-common'
             'libpamac-appstream.so=11' 'libpamac-appstream-plugin'
             'libpamac-aur.so=11' 'libpamac-aur-plugin')
-  conflicts=('libpamac-aur-plugin' 'libpamac-appstream-plugin')
+  conflicts=('libpamac-aur-plugin') # 'libpamac-appstream-plugin')
   replaces=('pamac-common')
 
   meson install -C build --destdir "$pkgdir"
@@ -65,7 +71,7 @@ package_libpamac() {
   rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
 
   # remove libpamac-flatpak
-  rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
+  #rm "$pkgdir/usr/lib/$pkgbase-flatpak".{so,so.*}
 
   # remove libpamac-appstream
   #rm "$pkgdir/usr/lib/$pkgbase-appstream".{so,so.*}
