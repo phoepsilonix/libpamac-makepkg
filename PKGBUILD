@@ -6,7 +6,7 @@ pkgbase=libpamac
 pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
 #         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
 pkgver=11.6.2+6+ge74fe0e
-pkgrel=3
+pkgrel=4
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -19,10 +19,9 @@ makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
 options=('debug')
 _commit=e74fe0e1c15f4fd14d02ff12650be3fde47287d7  # branch/master
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit"
-        meson.patch appstream-1.0.patch)
+        libpamac.diff)
 sha256sums=('SKIP'
-            '7d0401199ddae978f32f4180afaf920b213059e0300af66ca2fc9cef1d04db0e'
-            'bcc33c72f3dde8c7d66d2d425e5d25e61857b966ada8921a30096764878e2010')
+            '8baf2947ac7668c90720f98d998b345ef285d0355eff96a0289534ce6241923e')
 
 create_links() {
   # create soname links
@@ -41,8 +40,7 @@ pkgver() {
 
 prepare() {
   cd "$srcdir/$pkgbase"
-  patch -p1 -i ../meson.patch
-  patch -p1 -i ../appstream-1.0.patch
+  patch -p1 -i ../libpamac.diff
 }
 
 build() {
