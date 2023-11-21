@@ -1,7 +1,16 @@
 diff --git a/src/appstream_plugin.vala b/src/appstream_plugin.vala
-index e955952..a8d3ec0 100644
+index e955952..fb1ae17 100644
 --- a/src/appstream_plugin.vala
 +++ b/src/appstream_plugin.vala
+@@ -119,7 +119,7 @@ namespace Pamac {
+ 				if (_screenshots == null) {
+ 					_screenshots = new GenericArray<string> ();
+ 					if (_as_app != null) {
+-						unowned GenericArray<AppStream.Screenshot> as_screenshots = _as_app.get_screenshots ();
++						unowned GenericArray<AppStream.Screenshot> as_screenshots = _as_app.get_screenshots_all ();
+ 						foreach (unowned AppStream.Screenshot as_screenshot in as_screenshots) {
+ 							unowned GenericArray<AppStream.Image> as_images = as_screenshot.get_images ();
+ 							foreach (unowned AppStream.Image as_image in as_images) {
 @@ -178,7 +178,7 @@ namespace Pamac {
  					File appstream_file = File.new_for_path ("/usr/share/swcatalog/xml/%s.xml.gz".printf (repo));
  					if (appstream_file.query_exists ()) {
@@ -12,11 +21,15 @@ index e955952..a8d3ec0 100644
  						var desktop_apps = new HashTable<unowned string, App> (str_hash, str_equal);
  						unowned GenericArray<AppStream.Component> apps = mdata.get_components ();
 diff --git a/src/flatpak_plugin.vala b/src/flatpak_plugin.vala
-index cfefddd..4ea6e1c 100644
+index cfefddd..b42461a 100644
 --- a/src/flatpak_plugin.vala
 +++ b/src/flatpak_plugin.vala
-@@ -195,7 +195,7 @@ namespace Pamac {
- 						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots ();
+@@ -192,10 +192,10 @@ namespace Pamac {
+ 				if (_screenshots == null) {
+ 					_screenshots = new GenericArray<string> ();
+ 					if (as_app != null) {
+-						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots ();
++						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots_all ();
  						foreach (unowned AppStream.Screenshot as_screenshot in as_screenshots) {
  							// get a url with small image 
 -							unowned AppStream.Image as_image = as_screenshot.get_image (500, 300);

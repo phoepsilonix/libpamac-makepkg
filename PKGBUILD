@@ -22,7 +22,7 @@ source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commi
         meson.patch appstream-1.0.patch)
 sha256sums=('SKIP'
             '7d0401199ddae978f32f4180afaf920b213059e0300af66ca2fc9cef1d04db0e'
-            'bcfe09aada61907b7bc037ba0440dcc3db3ac9c814148c0495b6b725bf5f8d10')
+            '821f73b329dece528a73d71055b616fc338fe80862de63e1199ef7b91827a1c0')
 
 create_links() {
   # create soname links
