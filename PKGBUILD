@@ -11,7 +11,7 @@ _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
-license=('GPL3')
+license=('GPL-3.0-or-later')
 depends=('dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
          'libsoup3' 'pacman-mirrors' 'polkit')
 makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
