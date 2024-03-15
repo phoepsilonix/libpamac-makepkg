@@ -3,21 +3,42 @@
 # Contributor: Helmut Stult <helmut@manjaro.org>
 
 pkgbase=libpamac
-pkgname=('libpamac' 'libpamac-snap-plugin' 'libpamac-flatpak-plugin')
-#         'libpamac-aur-plugin' 'libpamac-appstream-plugin')
-pkgver=11.6.3
+pkgname=(
+  'libpamac'
+  'libpamac-snap-plugin'
+  'libpamac-flatpak-plugin'
+#  'libpamac-aur-plugin'
+#  'libpamac-appstream-plugin'
+)
+pkgver=11.6.4
 pkgrel=1
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
 url="https://gitlab.manjaro.org/applications/libpamac"
 license=('GPL-3.0-or-later')
-depends=('dbus-glib' 'git' 'glib2' 'json-glib' 'libalpm.so'
-         'libsoup3' 'pacman-mirrors' 'polkit')
-makedepends=('asciidoc' 'flatpak' 'gobject-introspection' 'meson' 'snapd'
-             'snapd-glib' 'vala' 'appstream')
+depends=(
+  'dbus-glib'
+  'git'
+  'glib2'
+  'json-glib'
+  'libalpm.so=14'
+  'libsoup3'
+  'pacman-mirrors'
+  'polkit'
+)
+makedepends=(
+  'appstream'
+  'asciidoc'
+  'flatpak'
+  'gobject-introspection'
+  'meson'
+  'snapd'
+  'snapd-glib'
+  'vala'
+)
 options=('debug')
-_commit=dff0d861a492e0dcbfb03b134cf737e627315d52  # tags/11.6.3^0
+_commit=9108cba3ae01c60c198e996a4956474a66597a7b  # tags/11.6.4^0
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
 
@@ -32,12 +53,12 @@ create_links() {
 }
 
 pkgver() {
-  cd "$srcdir/$pkgbase"
+  cd "$pkgbase"
   git describe --tags | sed 's/^v//;s/-/+/g'
 }
 
 prepare() {
-  cd "$srcdir/$pkgbase"
+  cd "$pkgbase"
 }
 
 build() {
@@ -49,18 +70,28 @@ build() {
 }
 
 package_libpamac() {
+  depends+=('appstream')
+  provides=(
+    'libpamac.so=11'
+    'pamac-common'
+    'libpamac-appstream.so=11'
+    'libpamac-appstream-plugin'
+    'libpamac-aur.so=11'
+    'libpamac-aur-plugin'
+  )
+  conflicts=(
+    'libpamac-aur-plugin'
+    'libpamac-appstream-plugin'
+  )
+  replaces=(
+    'pamac-common'
+  )
   backup=('etc/pamac.conf')
   install="$pkgname.install"
-  depends+=('appstream')
-  provides=('libpamac.so=11' 'pamac-common'
-            'libpamac-appstream.so=11' 'libpamac-appstream-plugin'
-            'libpamac-aur.so=11' 'libpamac-aur-plugin')
-  conflicts=('libpamac-aur-plugin' 'libpamac-appstream-plugin')
-  replaces=('pamac-common')
 
   meson install -C build --destdir "$pkgdir"
 
-  cd "$srcdir/$pkgbase"
+  cd "$pkgbase"
 
   # remove libpamac-snap
   rm "$pkgdir/usr/lib/$pkgbase-snap".{so,so.*}
@@ -77,8 +108,15 @@ package_libpamac() {
 
 package_libpamac-snap-plugin() {
   pkgdesc="Snap plugin for Pamac"
-  depends=('snapd' 'snapd-glib' 'libpamac')
-  provides=('libpamac-snap.so=11' 'pamac-snap-plugin')
+  depends=(
+    'libpamac'
+    'snapd'
+    'snapd-glib'
+  )
+  provides=(
+    'libpamac-snap.so=11'
+    'pamac-snap-plugin'
+  )
   replaces=('pamac-snap-plugin')
 
   install -Dm644 "build/src/$pkgbase-snap.so.${_sover}" \
@@ -89,9 +127,17 @@ package_libpamac-snap-plugin() {
 
 package_libpamac-flatpak-plugin() {
   pkgdesc="Flatpak plugin for Pamac"
-  depends=('flatpak' 'libpamac')
-  provides=('libpamac-flatpak.so=11' 'pamac-flatpak-plugin')
-  replaces=('pamac-flatpak-plugin')
+  depends=(
+    'flatpak'
+    'libpamac'
+  )
+  provides=(
+    'libpamac-flatpak.so=11'
+    'pamac-flatpak-plugin'
+  )
+  replaces=(
+    'pamac-flatpak-plugin'
+  )
   install="$pkgname.install"
 
   install -Dm644 "build/src/$pkgbase-flatpak.so.${_sover}" \
@@ -102,8 +148,13 @@ package_libpamac-flatpak-plugin() {
 
 package_libpamac-appstream-plugin() {
   pkgdesc="Appstream plugin for Pamac"
-  depends=('appstream' 'libpamac')
-  provides=('libpamac-appstream.so=11')
+  depends=(
+    'appstream'
+    'libpamac'
+  )
+  provides=(
+    'libpamac-appstream.so=11'
+  )
 
   install -Dm644 "build/src/$pkgbase-appstream.so.${_sover}" \
     "$pkgdir/usr/lib/$pkgbase-appstream.so.${_sover}"
@@ -113,8 +164,12 @@ package_libpamac-appstream-plugin() {
 
 package_libpamac-aur-plugin() {
   pkgdesc="AUR plugin for Pamac"
-  depends=('libpamac' 'base-devel')
-  provides=('libpamac-aur.so=11')
+  depends=(
+    'libpamac'
+  )
+  provides=(
+    'libpamac-aur.so=11'
+  )
 
   install -Dm644 "build/src/$pkgbase-aur.so.${_sover}" \
     "$pkgdir/usr/lib/$pkgbase-aur.so.${_sover}"
