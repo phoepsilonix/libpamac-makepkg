@@ -1,0 +1,12 @@
+diff --git a/src/alpm_config.vala b/src/alpm_config.vala
+index 9565aeb..7fb721c 100644
+--- a/src/alpm_config.vala
++++ b/src/alpm_config.vala
+@@ -121,6 +121,7 @@ internal class AlpmConfig {
+ 		// add archlinux-keyring and manjaro-keyring to syncfirsts
+ 		syncfirsts.add ("archlinux-keyring");
+ 		syncfirsts.add ("manjaro-keyring");
++		syncfirsts.add ("manjaro_jp-keyring");
+ 	}
+ 
+ 	public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false, bool copy_dbs = true) {
