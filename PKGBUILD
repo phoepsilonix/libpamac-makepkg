@@ -10,7 +10,7 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.6.4
+pkgver=11.6.4+2+g1421283
 pkgrel=1
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
@@ -38,7 +38,7 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=9108cba3ae01c60c198e996a4956474a66597a7b  # tags/11.6.4^0
+_commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
 sha256sums=('SKIP')
 
