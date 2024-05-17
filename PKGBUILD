@@ -10,7 +10,7 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.6.4+1+g3fe0f42
+pkgver=11.6.4+2+g1421283
 pkgrel=1
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
@@ -38,14 +38,10 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=9108cba3ae01c60c198e996a4956474a66597a7b  # tags/11.6.4^0
-_commit=3fe0f4230c1d57bf30ff233da94294bf8b58472b
+_commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
 source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit"
-        tmpdb_path-sync.patch
-        manjaro_jp.patch
-        )
-sha256sums=('37e6168f2f65d7187ae364a84f3c570de9c95b887edfbbb7bb7f57035563e998'
-            '200363034a6a3dc5a7e23483370de1c1988c6468bff9e9b3fe91896217ce4720'
+        manjaro_jp.patch)
+sha256sums=('5a2381203eb0eb423916252d28ae9f9ac37c6d60339564b037b8045bd6a27aea'
             'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
 
 if [[ ! "$CC" =~ "gcc" ]];then
@@ -70,7 +66,6 @@ pkgver() {
 
 prepare() {
   cd "$pkgbase"
-  patch -p1 -i ../tmpdb_path-sync.patch
   patch -p1 -i ../manjaro_jp.patch
 }
 
