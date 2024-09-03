@@ -1,6 +1,6 @@
-# Maintainer: Guillaume Benoit <guillaume@manjaro.org>
-# Contributor: Philip Müller <philm@manjaro.org>
-# Contributor: Helmut Stult <helmut@manjaro.org>
+# Maintainer: Mark Wagie <mark at manjaro dot org>
+# Maintainer: Philip Müller <philm@manjaro.org>
+# Contributor: Helmut Stult
 
 pkgbase=libpamac
 pkgname=(
@@ -39,8 +39,8 @@ makedepends=(
 )
 options=('debug')
 _commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
-source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit")
-sha256sums=('SKIP')
+source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=${_commit}")
+sha256sums=('5a2381203eb0eb423916252d28ae9f9ac37c6d60339564b037b8045bd6a27aea')
 
 create_links() {
   # create soname links
