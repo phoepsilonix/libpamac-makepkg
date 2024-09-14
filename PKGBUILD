@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.6.4+2+g1421283
-pkgrel=2
+pkgrel=3
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -22,7 +22,7 @@ depends=(
   'git'
   'glib2'
   'json-glib'
-  'libalpm.so=14'
+  'libalpm.so=15'
   'libsoup3'
   'pacman-mirrors'
   'polkit'
