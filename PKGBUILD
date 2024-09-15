@@ -15,7 +15,7 @@ pkgrel=3
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
-url="https://gitlab.manjaro.org/applications/libpamac"
+url="https://github.com/manjaro/libpamac"
 license=('GPL-3.0-or-later')
 depends=(
   'dbus-glib'
@@ -39,7 +39,7 @@ makedepends=(
 )
 options=('debug')
 _commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
-source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=${_commit}"
+source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}"
         '0001-flatpak_trans_run.patch'
         '0002-flatpak_runtime.patch')
 sha256sums=('5a2381203eb0eb423916252d28ae9f9ac37c6d60339564b037b8045bd6a27aea'
