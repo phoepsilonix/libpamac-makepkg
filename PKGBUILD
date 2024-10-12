@@ -10,8 +10,8 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.6.4+2+g1421283
-pkgrel=4
+pkgver=11.6.4+5+g8914d63
+pkgrel=1
 _sover=11.6
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -38,13 +38,9 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
-source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}"
-        '0001-flatpak_trans_run.patch'
-        '0002-flatpak_runtime.patch')
-sha256sums=('5a2381203eb0eb423916252d28ae9f9ac37c6d60339564b037b8045bd6a27aea'
-            '87fd4e31f338ee1b1428b0fca16c1cc54d3dbefd16d85902d25a03a935f75088'
-            'b517ce9ae76ed115910f73d94176070ff408e88156a6f51436a01b6b3d00cc9b')
+_commit=8914d631c0efd611587e1caf0af5b61389ae9e89  # master
+source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}")
+sha256sums=('11828409ca80654130eba752bb2bdd2b04ae9828449b78e9087f050150ee68fd')
 
 create_links() {
   # create soname links
@@ -63,11 +59,6 @@ pkgver() {
 
 prepare() {
   cd "$pkgbase"
-
-  # https://gitlab.manjaro.org/applications/libpamac/-/issues/33#note_32433
-  # https://gitlab.manjaro.org/applications/libpamac/-/issues/39
-  patch -Np1 -i ../0001-flatpak_trans_run.patch
-  patch -Np1 -i ../0002-flatpak_runtime.patch
 }
 
 build() {
