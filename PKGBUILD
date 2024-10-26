@@ -10,14 +10,15 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.6.4+5+g8914d63
+pkgver=11.7.0
 pkgrel=1
-_sover=11.6
+_sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
 url="https://github.com/manjaro/libpamac"
 license=('GPL-3.0-or-later')
 depends=(
+  'appstream'
   'dbus-glib'
   'git'
   'glib2'
@@ -38,9 +39,9 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=8914d631c0efd611587e1caf0af5b61389ae9e89  # master
+_commit=49bfde599ed00c127869a2797b5bb26e28e11c2a  # tags/11.7^0
 source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}")
-sha256sums=('11828409ca80654130eba752bb2bdd2b04ae9828449b78e9087f050150ee68fd')
+sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333')
 
 create_links() {
   # create soname links
@@ -70,7 +71,6 @@ build() {
 }
 
 package_libpamac() {
-  depends+=('appstream')
   provides=(
     'libpamac.so=11'
     'pamac-common'
