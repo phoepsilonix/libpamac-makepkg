@@ -1,6 +1,6 @@
-# Maintainer: Guillaume Benoit <guillaume@manjaro.org>
-# Contributor: Philip Müller <philm@manjaro.org>
-# Contributor: Helmut Stult <helmut@manjaro.org>
+# Maintainer: Mark Wagie <mark at manjaro dot org>
+# Maintainer: Philip Müller <philm@manjaro.org>
+# Contributor: Helmut Stult
 
 pkgbase=libpamac
 pkgname=(
@@ -10,19 +10,20 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.6.4+2+g1421283
+pkgver=11.7.0
 pkgrel=1
-_sover=11.6
+_sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
-url="https://gitlab.manjaro.org/applications/libpamac"
+url="https://github.com/manjaro/libpamac"
 license=('GPL-3.0-or-later')
 depends=(
+  'appstream'
   'dbus-glib'
   'git'
   'glib2'
   'json-glib'
-  'libalpm.so=14'
+  'libalpm.so=15'
   'libsoup3'
   'pacman-mirrors'
   'polkit'
@@ -38,11 +39,10 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=14212835ca50c3cb90aac0eed88e07b764dcba0e  # tags/11.6.4^0+2
-source=("git+https://gitlab.manjaro.org/applications/libpamac.git#commit=$_commit"
-        manjaro_jp.patch)
-sha256sums=('5a2381203eb0eb423916252d28ae9f9ac37c6d60339564b037b8045bd6a27aea'
-            'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
+
+_commit=49bfde599ed00c127869a2797b5bb26e28e11c2a  # tags/11.7^0
+source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}")
+sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333')
 
 if [[ ! "$CC" =~ "gcc" ]];then
   echo "when using clang, LTO is disabled. prevent SEGV."
@@ -78,7 +78,7 @@ build() {
 }
 
 package_libpamac() {
-  depends+=('appstream' 'pacman')
+  depends+=('appstream')
   provides=(
     'libpamac.so=11'
     'pamac-common'
