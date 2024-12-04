@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.0
-pkgrel=1
+pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -39,8 +39,7 @@ makedepends=(
   'vala'
 )
 options=('debug')
-_commit=49bfde599ed00c127869a2797b5bb26e28e11c2a  # tags/11.7^0
-source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}")
+source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver")
 sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333')
 
 create_links() {
@@ -53,13 +52,12 @@ create_links() {
   done
 }
 
-pkgver() {
-  cd "$pkgbase"
-  git describe --tags | sed 's/^v//;s/-/+/g'
-}
-
 prepare() {
   cd "$pkgbase"
+
+  # Fix bad conflict names
+  # https://github.com/manjaro/pamac/issues/469
+  git cherry-pick -n 23a509b3fd5219c363109b6b34486a147aba80df
 }
 
 build() {
