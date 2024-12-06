@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.0
-pkgrel=1
+pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -69,6 +69,9 @@ pkgver() {
 prepare() {
   cd "$pkgbase"
   patch -p1 -i ../manjaro_jp.patch
+  # Fix bad conflict names
+  # https://github.com/manjaro/pamac/issues/469
+  git cherry-pick -n 23a509b3fd5219c363109b6b34486a147aba80df
 }
 
 build() {
@@ -80,7 +83,7 @@ build() {
 }
 
 package_libpamac() {
-  depends+=('appstream')
+  depends+=('pacman')
   provides=(
     'libpamac.so=11'
     'pamac-common'
