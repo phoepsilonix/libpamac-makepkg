@@ -41,11 +41,13 @@ makedepends=(
 options=('debug')
 
 _commit=49bfde599ed00c127869a2797b5bb26e28e11c2a  # tags/11.7^0
-source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}")
-sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333')
+source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}"
+        manjaro_jp.patch)
+sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333'
+            'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
 
 if [[ ! "$CC" =~ "gcc" ]];then
-  echo "when using clang, LTO is disabled. prevent SEGV."
+  #echo "when using clang, LTO is disabled. prevent SEGV."
   options+=('!lto')
 fi
 
