@@ -10,8 +10,8 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.7.0
-pkgrel=2
+pkgver=11.7.2
+pkgrel=1
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -32,6 +32,7 @@ makedepends=(
   'appstream'
   'asciidoc'
   'flatpak'
+  'git'
   'gobject-introspection'
   'meson'
   'snapd'
@@ -40,7 +41,7 @@ makedepends=(
 )
 options=('debug')
 source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver")
-sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333')
+sha256sums=('72a20065f1655768fa3acb88db97f1da4b2ef876142c22e6faf659105b1c00d9')
 
 create_links() {
   # create soname links
@@ -54,10 +55,6 @@ create_links() {
 
 prepare() {
   cd "$pkgbase"
-
-  # Fix bad conflict names
-  # https://github.com/manjaro/pamac/issues/469
-  git cherry-pick -n 23a509b3fd5219c363109b6b34486a147aba80df
 }
 
 build() {
@@ -87,7 +84,7 @@ package_libpamac() {
   backup=('etc/pamac.conf')
   install="$pkgname.install"
 
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --no-rebuild --destdir "$pkgdir"
 
   cd "$pkgbase"
 
