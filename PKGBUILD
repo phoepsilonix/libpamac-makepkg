@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.2
-pkgrel=1
+pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -55,6 +55,10 @@ create_links() {
 
 prepare() {
   cd "$pkgbase"
+
+  # fix wrong authentication message language
+  # https://github.com/manjaro/pamac/issues/482
+  git cherry-pick -n 0461a0289662f89e316558565f10cb7a4ac9a0ee
 }
 
 build() {
