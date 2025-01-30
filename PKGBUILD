@@ -10,7 +10,7 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.7.0
+pkgver=11.7.2
 pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
@@ -32,6 +32,7 @@ makedepends=(
   'appstream'
   'asciidoc'
   'flatpak'
+  'git'
   'gobject-introspection'
   'meson'
   'snapd'
@@ -40,10 +41,9 @@ makedepends=(
 )
 options=('debug')
 
-_commit=49bfde599ed00c127869a2797b5bb26e28e11c2a  # tags/11.7^0
-source=("git+https://github.com/manjaro/libpamac.git#commit=${_commit}"
+source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver"
         manjaro_jp.patch)
-sha256sums=('be2b9ca5574ec664feb1512ed1b66549f8de0b8aff540dc6e7e5117d1f41d333'
+sha256sums=('72a20065f1655768fa3acb88db97f1da4b2ef876142c22e6faf659105b1c00d9'
             'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
 
 if [[ ! "$CC" =~ "gcc" ]];then
@@ -61,17 +61,13 @@ create_links() {
   done
 }
 
-pkgver() {
-  cd "$pkgbase"
-  git describe --tags | sed 's/^v//;s/-/+/g'
-}
-
 prepare() {
   cd "$pkgbase"
   patch -p1 -i ../manjaro_jp.patch
-  # Fix bad conflict names
-  # https://github.com/manjaro/pamac/issues/469
-  git cherry-pick -n 23a509b3fd5219c363109b6b34486a147aba80df
+
+  # fix wrong authentication message language
+  # https://github.com/manjaro/pamac/issues/482
+  git cherry-pick -n 0461a0289662f89e316558565f10cb7a4ac9a0ee
 }
 
 build() {
@@ -102,7 +98,7 @@ package_libpamac() {
   backup=('etc/pamac.conf')
   install="$pkgname.install"
 
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --no-rebuild --destdir "$pkgdir"
 
   cd "$pkgbase"
 
