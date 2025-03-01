@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.3
-pkgrel=1
+pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
