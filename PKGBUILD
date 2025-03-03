@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.3
-pkgrel=2
+pkgrel=3
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -55,6 +55,9 @@ create_links() {
 
 prepare() {
   cd "$pkgbase"
+
+  # https://github.com/manjaro/libpamac/issues/3
+  git cherry-pick -n 087af94264cf1e79a809a2f5dbb570a617e09d45
 }
 
 build() {
