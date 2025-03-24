@@ -10,8 +10,8 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.7.2
-pkgrel=3
+pkgver=11.7.3
+pkgrel=4
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -40,10 +40,9 @@ makedepends=(
   'vala'
 )
 options=('debug')
-
 source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver"
         manjaro_jp.patch)
-sha256sums=('72a20065f1655768fa3acb88db97f1da4b2ef876142c22e6faf659105b1c00d9'
+sha256sums=('7a0e6abfa5f1ea1f1530301566aacb0acffaf95d93d36a6811dcd874460ca57d'
             'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
 
 if [[ ! "$CC" =~ "gcc" ]];then
@@ -65,12 +64,8 @@ prepare() {
   cd "$pkgbase"
   patch -p1 -i ../manjaro_jp.patch
 
-  # fix wrong authentication message language
-  # https://github.com/manjaro/pamac/issues/482
-  git cherry-pick -n 0461a0289662f89e316558565f10cb7a4ac9a0ee
-
-  # always check for AUR db
-  git cherry-pick -n a6761a47a34011c5eaf050b6470f21722454a3e7
+  # https://github.com/manjaro/libpamac/issues/3
+  git cherry-pick -n 087af94264cf1e79a809a2f5dbb570a617e09d45
 }
 
 build() {
