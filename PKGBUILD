@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.3
-pkgrel=4
+pkgrel=5
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -43,6 +43,15 @@ options=('debug')
 source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver")
 sha256sums=('7a0e6abfa5f1ea1f1530301566aacb0acffaf95d93d36a6811dcd874460ca57d')
 
+_backports=(
+  # https://github.com/manjaro/libpamac/issues/3
+  087af94264cf1e79a809a2f5dbb570a617e09d45
+  37d739fbc1ce5db9d04e774041455ccdccb9aec1
+  aea50659d02ce5396277251b9eca89592efc07e2
+  7d1424b8526104b627011a30b8d2cb77d552280a
+  06d1a3cb0a50d92d003d3b3215e2d033e98f9fe7
+)
+
 create_links() {
   # create soname links
   find "$pkgdir" -type f -name '*.so*' ! -path '*xorg/*' -print0 | while read -d $'\0' _lib; do
@@ -56,8 +65,17 @@ create_links() {
 prepare() {
   cd "$pkgbase"
 
-  # https://github.com/manjaro/libpamac/issues/3
-  git cherry-pick -n 087af94264cf1e79a809a2f5dbb570a617e09d45
+  local _c _l
+  for _c in "${_backports[@]}"; do
+    if [[ "${_c}" == *..* ]]; then _l='--reverse'; else _l='--max-count=1'; fi
+    git --no-pager log --oneline "${_l}" "${_c}"
+    git cherry-pick --mainline 1 --no-commit "${_c}"
+  done
+  for _c in "${_reverts[@]}"; do
+    if [[ "${_c}" == *..* ]]; then _l='--reverse'; else _l='--max-count=1'; fi
+    git log --oneline "${_l}" "${_c}"
+    git revert --mainline 1 --no-commit "${_c}"
+  done
 }
 
 build() {
