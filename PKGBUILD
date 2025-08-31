@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.3
-pkgrel=5
+pkgrel=6
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -50,6 +50,11 @@ _backports=(
   aea50659d02ce5396277251b9eca89592efc07e2
   7d1424b8526104b627011a30b8d2cb77d552280a
   06d1a3cb0a50d92d003d3b3215e2d033e98f9fe7
+  cc74f2f9cf0b26807b96ee74b4f86ae441ef4a7c
+  # https://github.com/manjaro/libpamac/issues/5
+  327c5ac7b20541c1f0ac00f6af6427137d70141a
+  35f1ab2da94fae503e5d995dae09c0dd495afecf
+  56396334a0ba1faa864f16193f1cafb944404439
 )
 
 create_links() {
