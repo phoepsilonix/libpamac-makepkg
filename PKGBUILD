@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.3
-pkgrel=6
+pkgrel=7
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -55,6 +55,9 @@ _backports=(
   327c5ac7b20541c1f0ac00f6af6427137d70141a
   35f1ab2da94fae503e5d995dae09c0dd495afecf
   56396334a0ba1faa864f16193f1cafb944404439
+  bbddf5520251afc800f2ad04091717d235280852
+  f2333b4838ab506f3973a7ff2ee14a7231bd91b5
+  84d9620dd707201b69d9516eda6ac789812efc66
 )
 
 create_links() {
