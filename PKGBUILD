@@ -10,8 +10,8 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.7.3
-pkgrel=7
+pkgver=11.7.4
+pkgrel=1
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -41,23 +41,9 @@ makedepends=(
 )
 options=('debug')
 source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver")
-sha256sums=('7a0e6abfa5f1ea1f1530301566aacb0acffaf95d93d36a6811dcd874460ca57d')
+sha256sums=('13f531db76921740e7d5b2478cc774d29757313ff4a85befe5c683c6b0cd0d47')
 
 _backports=(
-  # https://github.com/manjaro/libpamac/issues/3
-  087af94264cf1e79a809a2f5dbb570a617e09d45
-  37d739fbc1ce5db9d04e774041455ccdccb9aec1
-  aea50659d02ce5396277251b9eca89592efc07e2
-  7d1424b8526104b627011a30b8d2cb77d552280a
-  06d1a3cb0a50d92d003d3b3215e2d033e98f9fe7
-  cc74f2f9cf0b26807b96ee74b4f86ae441ef4a7c
-  # https://github.com/manjaro/libpamac/issues/5
-  327c5ac7b20541c1f0ac00f6af6427137d70141a
-  35f1ab2da94fae503e5d995dae09c0dd495afecf
-  56396334a0ba1faa864f16193f1cafb944404439
-  bbddf5520251afc800f2ad04091717d235280852
-  f2333b4838ab506f3973a7ff2ee14a7231bd91b5
-  84d9620dd707201b69d9516eda6ac789812efc66
 )
 
 create_links() {
