@@ -10,8 +10,8 @@ pkgname=(
 #  'libpamac-aur-plugin'
 #  'libpamac-appstream-plugin'
 )
-pkgver=11.7.3
-pkgrel=4
+pkgver=11.7.4
+pkgrel=1
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -42,13 +42,16 @@ makedepends=(
 options=('debug')
 source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver"
         manjaro_jp.patch)
-sha256sums=('7a0e6abfa5f1ea1f1530301566aacb0acffaf95d93d36a6811dcd874460ca57d'
+sha256sums=('13f531db76921740e7d5b2478cc774d29757313ff4a85befe5c683c6b0cd0d47'
             'dc74c3c18f1481b2f86fdaedc6f970378b697cbb53cf892aad2f08a776260855')
 
 if [[ ! "$CC" =~ "gcc" ]];then
   #echo "when using clang, LTO is disabled. prevent SEGV."
   options+=('!lto')
 fi
+
+_backports=(
+)
 
 create_links() {
   # create soname links
@@ -64,8 +67,17 @@ prepare() {
   cd "$pkgbase"
   patch -p1 -i ../manjaro_jp.patch
 
-  # https://github.com/manjaro/libpamac/issues/3
-  git cherry-pick -n 087af94264cf1e79a809a2f5dbb570a617e09d45
+  local _c _l
+  for _c in "${_backports[@]}"; do
+    if [[ "${_c}" == *..* ]]; then _l='--reverse'; else _l='--max-count=1'; fi
+    git --no-pager log --oneline "${_l}" "${_c}"
+    git cherry-pick --mainline 1 --no-commit "${_c}"
+  done
+  for _c in "${_reverts[@]}"; do
+    if [[ "${_c}" == *..* ]]; then _l='--reverse'; else _l='--max-count=1'; fi
+    git log --oneline "${_l}" "${_c}"
+    git revert --mainline 1 --no-commit "${_c}"
+  done
 }
 
 build() {
