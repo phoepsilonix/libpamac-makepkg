@@ -11,7 +11,7 @@ pkgname=(
 #  'libpamac-appstream-plugin'
 )
 pkgver=11.7.4
-pkgrel=1
+pkgrel=2
 _sover=11.7
 pkgdesc="Library for Pamac package manager based on libalpm"
 arch=('x86_64' 'aarch64')
@@ -23,7 +23,7 @@ depends=(
   'git'
   'glib2'
   'json-glib'
-  'libalpm.so=15'
+  'libalpm.so=16'
   'libsoup3'
   'pacman-mirrors'
   'polkit'
@@ -44,6 +44,7 @@ source=("git+https://github.com/manjaro/libpamac.git#tag=$pkgver")
 sha256sums=('13f531db76921740e7d5b2478cc774d29757313ff4a85befe5c683c6b0cd0d47')
 
 _backports=(
+  add94a888180ddbe04acae082e9db5cfb34c2fcd
 )
 
 create_links() {
