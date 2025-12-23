@@ -66,7 +66,6 @@ create_links() {
 
 prepare() {
   cd "$pkgbase"
-  patch -p1 -i ../manjaro_jp.patch
 
   local _c _l
   for _c in "${_backports[@]}"; do
@@ -79,6 +78,7 @@ prepare() {
     git log --oneline "${_l}" "${_c}"
     git revert --mainline 1 --no-commit "${_c}"
   done
+  patch -p1 -i ../manjaro_jp.patch
 }
 
 build() {
